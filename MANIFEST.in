@@ -1,0 +1,9 @@
+include AUTHORS
+include LICENSE
+include DESCRIPTION
+include CHANGELOG.txt
+include README.md
+graft event_rsvp
+global-exclude *.orig *.pyc *.log
+prune event_rsvp/tests/coverage/
+prune event_rsvp/.ropeproject/
