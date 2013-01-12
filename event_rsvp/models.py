@@ -1,6 +1,9 @@
 """Models for the ``event_rsvp`` application."""
+from django.core.urlresolvers import reverse
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils import timezone
+from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -43,6 +46,11 @@ class Event(models.Model):
     title = models.CharField(
         max_length=50,
         verbose_name=_('Title'),
+        help_text=_('The title will also be used for the event URL.'),
+    )
+
+    slug = models.SlugField(
+        verbose_name=_('Slug'),
     )
 
     description = models.TextField(
@@ -115,11 +123,13 @@ class Event(models.Model):
     allow_anonymous_rsvp = models.BooleanField(
         default=False,
         verbose_name=_('Allow anonymous RSVP'),
+        help_text=_('Even anonymous users can rsvp, without adding any info.'),
     )
 
     require_name_and_email = models.BooleanField(
         default=False,
         verbose_name=_('Require name & email'),
+        help_text=_('Check to require at least a name and a mail.'),
     )
 
     max_seats_per_guest = models.PositiveIntegerField(
@@ -131,12 +141,39 @@ class Event(models.Model):
         max_length=100,
         verbose_name=_('Save as template'),
         blank=True, null=True,
+        help_text=_('Save this event as a template to re-use it later.'),
     )
 
     def __unicode__(self):
         if self.template_name:
-            return '{0} ({1})'.format(self.template_name, _('Template'))
+            return '{0} ({1})'.format(self.template_name, ugettext('Template'))
         return '{0} ({1})'.format(self.title, self.start)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        suspects = Event.objects.filter(slug=self.slug)
+        if suspects.count() > 0 and suspects[0] != self:
+            while Event.objects.filter(slug=self.slug).count() > 0:
+                self.slug = "_" + self.slug
+        super(Event, self).save(*args, **kwargs)
+
+    def get_absolute_url(self, url='rsvp_event_detail'):
+        return reverse(url, kwargs={
+            'slug': self.slug,
+            'year': '{0:04d}'.format(self.start.year),
+            'month': '{0:02d}'.format(self.start.month),
+            'day': '{0:02d}'.format(self.start.day),
+        })
+
+    def get_update_url(self):
+        return self.get_absolute_url(url='rsvp_event_update')
+
+    def get_delete_url(self):
+        return self.get_absolute_url(url='rsvp_event_delete')
+
+    def get_template_url(self):
+        return reverse('rsvp_event_create_from_template', kwargs={
+            'pk': self.pk})
 
 
 class Guest(models.Model):
@@ -185,7 +222,8 @@ class Guest(models.Model):
 
     def __unicode__(self):
         if self.user:
-            return '{0} ({1})'.format(self.user.get_full_name(), self.event)
+            return '{0} - {1}'.format(
+                self.user.get_full_name() or self.user.email, self.event)
         elif self.name or self.email:
-            return '{0} ({1})'.format(self.name or self.email, self.event)
-        return '{0} ({1})'.format(_('anonymous'), self.event)
+            return '{0} - {1}'.format(self.name or self.email, self.event)
+        return '{0} - {1}'.format(ugettext('anonymous'), self.event)

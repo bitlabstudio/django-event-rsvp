@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main %}
+<h1>{{ object }}</h1>
+<table>
+    <tr>
+        <th>{% trans "Title" %}</th>
+        <td>{{ object.title }}</td>
+    </tr>
+    {% if object.description %}
+        <tr>
+            <th>{% trans "Description" %}</th>
+            <td>{{ object.description }}</td>
+        </tr>
+    {% endif %}
+    <tr>
+        <th>{% trans "Starting" %}</th>
+        <td>{{ object.start }}</td>
+    </tr>
+    <tr>
+        <th>{% trans "Ending" %}</th>
+        <td>{{ object.end }}</td>
+    </tr>
+    <tr>
+        <th>{% trans "Venue" %}</th>
+        <td>{{ object.venue }}</td>
+    </tr>
+    {% if object.street %}
+        <tr>
+            <th>{% trans "Street" %}</th>
+            <td>{{ object.street }}</td>
+        </tr>
+    {% endif %}
+    {% if object.city %}
+        <tr>
+            <th>{% trans "City" %}</th>
+            <td>{{ object.city }}</td>
+        </tr>
+    {% endif %}
+    {% if object.zip %}
+        <tr>
+            <th>{% trans "ZIP code" %}</th>
+            <td>{{ object.zip }}</td>
+        </tr>
+    {% endif %}
+    {% if object.country %}
+        <tr>
+            <th>{% trans "Country" %}</th>
+            <td>{{ object.country }}</td>
+        </tr>
+    {% endif %}
+    {% if object.contact_person %}
+        <tr>
+            <th>{% trans "Contact" %}</th>
+            <td>{{ object.contact_person }}</td>
+        </tr>
+    {% endif %}
+    {% if object.contact_email %}
+        <tr>
+            <th>{% trans "Email" %}</th>
+            <td>{{ object.contact_email }}</td>
+        </tr>
+    {% endif %}
+    {% if object.contact_phone %}
+        <tr>
+            <th>{% trans "Phone" %}</th>
+            <td>{{ object.contact_phone }}</td>
+        </tr>
+    {% endif %}
+    {% if object.available_seats %}
+        <tr>
+            <th>{% trans "Available seats" %}</th>
+            <td>{{ object.available_seats }}</td>
+        </tr>
+    {% endif %}
+    <tr>
+        <th>{% trans "Maximum amount of seats per guest" %}</th>
+        <td>{{ object.max_seats_per_guest }}</td>
+    </tr>
+{% endblock %}

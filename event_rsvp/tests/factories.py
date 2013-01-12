@@ -38,6 +38,10 @@ class UserFactory(factory.Factory):
         return user
 
 
+class StaffFactory(UserFactory):
+    is_staff = True
+
+
 class EventFactory(factory.Factory):
     FACTORY_FOR = Event
 

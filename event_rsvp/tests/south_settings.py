@@ -9,7 +9,7 @@ Unfortunately there seems to be an issue with either South or syncdb so that
 defining two routers ("default" and "south") does not work.
 
 """
-from event_rsvp.tests.test_settings import *
+from event_rsvp.tests.test_settings import *  # NOQA
 
 
 DATABASES = {

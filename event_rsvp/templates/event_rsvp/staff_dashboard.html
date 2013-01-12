@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block main %}
+<h1>{% trans "Dashboard" %}</h1>
+<a href="{% url "rsvp_event_create" %}">{% trans "Create event" %}</a>
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Upcoming events" %}</th>
+            <th>{% trans "Current events" %}</th>
+            <th>{% trans "Past events" %}</th>
+            <th>{% trans "Templates" %}</th>
+        <tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <ul>
+                    {% for event in upcoming %}
+                        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> <a href="{{ event.get_update_url }}">{% trans "Update" %}</a> <a href="{{ event.get_delete_url }}">{% trans "Delete" %}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for event in current %}
+                        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> <a href="{{ event.get_update_url }}">{% trans "Update" %}</a> <a href="{{ event.get_delete_url }}">{% trans "Delete" %}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for event in past %}
+                        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> <a href="{{ event.get_update_url }}">{% trans "Update" %}</a> <a href="{{ event.get_delete_url }}">{% trans "Delete" %}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for event in templates %}
+                        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> <a href="{{ event.get_update_url }}">{% trans "Update" %}</a> <a href="{{ event.get_delete_url }}">{% trans "Delete" %}</a> <a href="{{ event.get_template_url }}">{% trans "Use template for new event" %}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
