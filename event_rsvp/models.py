@@ -154,7 +154,12 @@ class Event(models.Model):
         suspects = Event.objects.filter(slug=self.slug)
         if suspects.count() > 0 and suspects[0] != self:
             while Event.objects.filter(slug=self.slug).count() > 0:
-                self.slug = "_" + self.slug
+                try:
+                    number = int(self.slug[-1])
+                except ValueError:
+                    self.slug = self.slug + '0'
+                else:
+                    self.slug = self.slug[:-1] + str(number + 1)
         super(Event, self).save(*args, **kwargs)
 
     def get_absolute_url(self, url='rsvp_event_detail'):

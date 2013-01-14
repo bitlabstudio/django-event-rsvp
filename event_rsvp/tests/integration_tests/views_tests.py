@@ -19,7 +19,7 @@ class EventDetailViewTestCase(ViewTestMixin, TestCase):
 
         # Test with wrong url kwargs
         resp = self.client.get(self.event.get_absolute_url().replace('2', '1'))
-        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.status_code, 302)
 
 
 class EventCreateViewTestCase(ViewTestMixin, TestCase):

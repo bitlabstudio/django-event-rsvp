@@ -1,7 +1,7 @@
 """Views for the ``event_rsvp`` app."""
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 
@@ -56,7 +56,9 @@ class EventSecurityMixin(object):
         if (date.year != int(kwargs.get('year'))
                 or date.month != int(kwargs.get('month'))
                 or date.day != int(kwargs.get('day'))):
-            raise Http404
+            redirect_url = getattr(self.object, 'get_{0}_url'.format(
+                self.url_mode))
+            return HttpResponseRedirect(redirect_url())
         return super(EventSecurityMixin, self).dispatch(request, *args,
                                                         **kwargs)
 
@@ -67,7 +69,7 @@ class EventSecurityMixin(object):
 
 class EventDetailView(EventSecurityMixin, EventViewMixin, DetailView):
     """Detail view to display information of an event."""
-    pass
+    url_mode = 'absolute'
 
 
 class EventCreateView(StaffMixin, EventViewMixin, CreateView):
@@ -78,13 +80,13 @@ class EventCreateView(StaffMixin, EventViewMixin, CreateView):
 class EventUpdateView(StaffMixin, EventSecurityMixin, EventViewMixin,
                       UpdateView):
     """Update view to handle information of an event."""
-    pass
+    url_mode = 'update'
 
 
 class EventDeleteView(StaffMixin, EventSecurityMixin, EventViewMixin,
                       DeleteView):
     """Update view to handle information of an event."""
-    pass
+    url_mode = 'delete'
 
 
 class EventCreateFromTemplateView(StaffMixin, EventViewMixin, CreateView):

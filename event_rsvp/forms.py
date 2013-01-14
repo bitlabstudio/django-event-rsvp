@@ -10,6 +10,12 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, created_by, create_from_template=False, *args,
                  **kwargs):
+        """
+        :created_by: Django-Auth User model, which is calling this view
+        :create_from_template: Boolean to know, if someone is using a template
+                               as draft.
+
+        """
         self.instance = kwargs.get('instance')
         self.create_from_template = create_from_template
         if hasattr(self.instance, 'id') and not self.create_from_template:
