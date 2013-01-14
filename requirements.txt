@@ -11,6 +11,7 @@ South==0.7.6
 # Packages needed for running the tests. Needed by contributors.
 # ==============================================================
 factory-boy==1.2.0
+django-libs==0.14
 Fabric
 mock
 django-nose

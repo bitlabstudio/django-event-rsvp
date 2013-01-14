@@ -77,42 +77,42 @@ class Event(models.Model):
     street = models.CharField(
         max_length=100,
         verbose_name=_('Street'),
-        blank=True, null=True,
+        blank=True,
     )
 
     city = models.CharField(
         max_length=100,
         verbose_name=_('City'),
-        blank=True, null=True,
+        blank=True,
     )
 
     zip = models.CharField(
         max_length=100,
         verbose_name=_('ZIP code'),
-        blank=True, null=True,
+        blank=True,
     )
 
     country = models.CharField(
         max_length=100,
         verbose_name=_('Country'),
-        blank=True, null=True,
+        blank=True,
     )
 
     contact_person = models.CharField(
         max_length=100,
         verbose_name=_('Contact name'),
-        blank=True, null=True,
+        blank=True,
     )
 
     contact_email = models.EmailField(
         verbose_name=_('Contact email'),
-        blank=True, null=True,
+        blank=True,
     )
 
     contact_phone = models.CharField(
         max_length=100,
         verbose_name=_('Contact phone'),
-        blank=True, null=True,
+        blank=True,
     )
 
     available_seats = models.PositiveIntegerField(
@@ -140,7 +140,7 @@ class Event(models.Model):
     template_name = models.CharField(
         max_length=100,
         verbose_name=_('Save as template'),
-        blank=True, null=True,
+        blank=True,
         help_text=_('Save this event as a template to re-use it later.'),
     )
 
@@ -202,12 +202,12 @@ class Guest(models.Model):
     name = models.CharField(
         max_length=50,
         verbose_name=_('Name'),
-        blank=True, null=True,
+        blank=True,
     )
 
     email = models.EmailField(
         verbose_name=_('Email'),
-        blank=True, null=True,
+        blank=True,
     )
 
     number_of_seats = models.PositiveIntegerField(

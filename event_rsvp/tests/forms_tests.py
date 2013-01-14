@@ -2,9 +2,10 @@
 from django.test import TestCase
 from django.utils import timezone
 
+from django_libs.tests.factories import UserFactory
+
 from event_rsvp.forms import EventForm
 from event_rsvp.models import Event
-from event_rsvp.tests.factories import UserFactory
 
 
 class EventFormTestCase(TestCase):
