@@ -18,8 +18,8 @@ class EventTestCase(TestCase):
         event_2 = EventFactory()
         self.assertEqual(event_2.get_free_seats(),
                          _('Unlimited seats available.'))
-        guest = GuestFactory(event=event_1)
-        self.assertEqual(guest.event.get_free_seats(), 19)
+        GuestFactory(event=event_1)
+        self.assertEqual(event_1.get_free_seats(), 19)
 
     def test_is_bookable(self):
         event_1 = EventFactory()

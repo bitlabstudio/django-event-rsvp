@@ -79,16 +79,46 @@ class GuestForm(forms.ModelForm):
 
         """
         self.event = event
-        self.user = user
+        if user and user.is_authenticated():
+            self.user = user
+        else:
+            self.user = None
         super(GuestForm, self).__init__(*args, **kwargs)
 
     def clean_number_of_seats(self):
         data = self.cleaned_data['number_of_seats'] or 1
-        if self.event.available_seats and self.event.get_free_seats() < data:
-            raise forms.ValidationError(
-                _('Sorry. There are only {0} seats left.'.format(
-                    self.event.get_free_seats())))
+        free_seats = self.event.get_free_seats()
+        if self.event.available_seats and free_seats < data:
+            if free_seats == 1:
+                msg = _('Sorry. There is only {0} seat left.'.format(
+                    free_seats))
+            else:
+                msg = _('Sorry. There are only {0} seats left.'.format(
+                    free_seats))
+            raise forms.ValidationError(msg)
+        if data > self.event.max_seats_per_guest:
+            if self.event.max_seats_per_guest == 1:
+                msg = _('Pardon. There is only {0} seat per person'
+                        ' reservable.'.format(self.event.max_seats_per_guest))
+            else:
+                msg = _('Pardon. There are only {0} seats per person'
+                        ' reservable.'.format(self.event.max_seats_per_guest))
+            raise forms.ValidationError(msg)
         return data
+
+    def clean_name(self):
+        if self.event.require_name_and_email:
+            if not self.cleaned_data['name']:
+                raise forms.ValidationError(
+                    _('Your name is required for this event.'))
+        return self.cleaned_data['name']
+
+    def clean_email(self):
+        if self.event.require_name_and_email:
+            if not self.cleaned_data['email']:
+                raise forms.ValidationError(
+                    _('Your email is required for this event.'))
+        return self.cleaned_data['email']
 
     def save(self, *args, **kwargs):
         self.instance.user = self.user

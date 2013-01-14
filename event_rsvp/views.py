@@ -78,6 +78,9 @@ class GuestViewMixin(object):
     def get_context_data(self, **kwargs):
         context = super(GuestViewMixin, self).get_context_data(**kwargs)
         context.update({'event': self.event, 'user': self.request.user})
+        if (self.request.user.is_authenticated()
+                or self.event.allow_anonymous_rsvp):
+            context.update({'permission_to_book': True})
         return context
 
     def get_form_kwargs(self):
@@ -87,6 +90,15 @@ class GuestViewMixin(object):
 
     def get_success_url(self):
         return self.event.get_absolute_url()
+
+
+class GuestSecurityMixin(object):
+    """Mixin to handle guest-specific security options."""
+    def get_object(self, *args, **kwargs):
+        obj = super(GuestSecurityMixin, self).get_object(*args, **kwargs)
+        if obj.event != self.event:
+            raise Http404
+        return obj
 
 
 #--------#
@@ -167,21 +179,41 @@ class StaffDashboardView(StaffMixin, ListView):
         return context
 
 
-class GuestDetailView(StaffMixin, GuestViewMixin, DetailView):
+class GuestDetailView(StaffMixin, GuestSecurityMixin, GuestViewMixin,
+                      DetailView):
     """View to display guest related functions and lists."""
     pass
 
 
 class GuestCreateView(GuestViewMixin, CreateView):
     """Create view to add a guest to an event."""
-    pass
+    def get_form_kwargs(self):
+        kwargs = super(GuestCreateView, self).get_form_kwargs()
+        if self.request.user.is_authenticated():
+            kwargs.update({'initial': {
+                'name': self.request.user.get_full_name(),
+                'email': self.request.user.email}})
+        return kwargs
 
 
-class GuestUpdateView(GuestViewMixin, UpdateView):
+class GuestUpdateView(GuestSecurityMixin, GuestViewMixin, UpdateView):
     """Update view to handle a guest."""
-    pass
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.event = Event.objects.get(slug=kwargs.get('event_slug'))
+        except Event.DoesNotExist:
+            raise Http404
+        self.kwargs = kwargs
+        self.object = self.get_object()
+        if (not request.user.is_staff and not self.object.user
+                and not self.object.user == request.user):
+            raise Http404
+        return super(GuestViewMixin, self).dispatch(request, *args, **kwargs)
 
 
-class GuestDeleteView(StaffMixin, GuestViewMixin, DeleteView):
+class GuestDeleteView(StaffMixin, GuestViewMixin, GuestSecurityMixin,
+                      DeleteView):
     """Delete view to remove the relevant guest."""
     pass

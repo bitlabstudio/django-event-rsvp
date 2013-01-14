@@ -245,8 +245,3 @@ class Guest(models.Model):
         elif self.name or self.email:
             return '{0} - {1}'.format(self.name or self.email, self.event)
         return '{0} - {1}'.format(ugettext('anonymous'), self.event)
-
-    def save(self, *args, **kwargs):
-        if not self.number_of_seats:
-            self.number_of_seats = 1
-        super(Guest, self).save(*args, **kwargs)

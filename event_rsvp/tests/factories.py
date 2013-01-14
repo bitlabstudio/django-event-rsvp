@@ -21,3 +21,4 @@ class GuestFactory(factory.Factory):
     FACTORY_FOR = Guest
 
     event = factory.SubFactory(EventFactory)
+    number_of_seats = 1

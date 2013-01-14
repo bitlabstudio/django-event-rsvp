@@ -193,6 +193,7 @@ class GuestDetailViewTestCase(ViewTestMixin, TestCase):
     def setUp(self):
         self.guest = GuestFactory()
         self.staff = StaffFactory()
+        self.event = EventFactory()
 
     def get_view_name(self):
         return 'rsvp_guest_detail'
@@ -202,3 +203,29 @@ class GuestDetailViewTestCase(ViewTestMixin, TestCase):
 
     def test_view(self):
         self.should_be_callable_when_authenticated(self.staff)
+        self.is_not_callable(kwargs={'pk': self.guest.pk,
+                                     'event_slug': self.event.slug})
+
+
+class GuestUpdateViewTestCase(ViewTestMixin, TestCase):
+    """Tests for the ``GuestUpdateView`` view."""
+    longMessage = True
+
+    def setUp(self):
+        self.user = UserFactory()
+        self.guest = GuestFactory(user=self.user)
+        self.staff = StaffFactory()
+
+    def get_view_name(self):
+        return 'rsvp_guest_update'
+
+    def get_view_kwargs(self):
+        return {'pk': self.guest.pk, 'event_slug': self.guest.event.slug}
+
+    def test_view(self):
+        self.should_be_callable_when_authenticated(self.staff)
+        self.should_be_callable_when_authenticated(self.user)
+        self.is_not_callable(kwargs={'pk': self.guest.pk, 'event_slug': '500'})
+        self.guest.user = None
+        self.guest.save()
+        self.is_not_callable(user=self.user)

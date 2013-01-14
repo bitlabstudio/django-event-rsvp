@@ -9,7 +9,7 @@
         {% trans "Participate on" %} {{ event }}
     {% endif %}
 </h1>
-{% if event.is_bookable and event.get_free_seats > 0 %}
+{% if event.is_bookable and event.get_free_seats > 0 and permission_to_book %}
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -18,7 +18,9 @@
     </form>
 {% elif not event.is_bookable %}
     <p>{% trans "We're sorry. The event has already started." %}</p>
-{% else %}
+{% elif event.get_free_seats == 0 %}
     <p>{% trans "We're sorry. The event is fully booked." %}</p>
+{% else %}
+    <p>{% trans "We're sorry. You need to be logged in to book this event." %}</p>
 {% endif %}
 {% endblock %}

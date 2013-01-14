@@ -61,11 +61,37 @@ class GuestFormTestCase(TestCase):
     longMessage = True
 
     def test_validates_and_saves_input(self):
+        # Test exceeding available seats
+        self.event = EventFactory(available_seats=1)
+        form = GuestForm(data={'number_of_seats': 100}, event=self.event,
+                         user=None)
+        self.assertFalse(form.is_valid())
+
+        # Test exceeding available seats (plural error msg)
         self.event = EventFactory(available_seats=20)
         form = GuestForm(data={'number_of_seats': 100}, event=self.event,
                          user=None)
         self.assertFalse(form.is_valid())
+
+        # Test exceeding max amount of seats per booking
+        form = GuestForm(data={'number_of_seats': 2}, event=self.event,
+                         user=None)
+        self.assertFalse(form.is_valid())
+
+        # Test exceeding max amount of seats per booking (plural error msg)
+        self.event = EventFactory(max_seats_per_guest=2)
+        form = GuestForm(data={'number_of_seats': 3}, event=self.event,
+                         user=None)
+        self.assertFalse(form.is_valid())
+
+        # Test ignoring required name and email
+        self.event = EventFactory(require_name_and_email=True)
         form = GuestForm(data={}, event=self.event, user=None)
+        self.assertFalse(form.is_valid())
+
+        # Test valid form
+        form = GuestForm(data={'name': 'Foo', 'email': 'test@example.com'},
+                         event=self.event, user=None)
         self.assertTrue(form.is_valid())
         form.save()
         self.assertEqual(Guest.objects.all().count(), 1)
