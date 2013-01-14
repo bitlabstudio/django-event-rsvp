@@ -1,7 +1,8 @@
 """Forms for the ``event_rsvp`` app."""
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
-from event_rsvp.models import Event
+from event_rsvp.models import Event, Guest
 
 
 class EventForm(forms.ModelForm):
@@ -22,7 +23,6 @@ class EventForm(forms.ModelForm):
             # Ignore the current user if it's the update view or if the
             # instance is a template
             self.created_by = self.instance.created_by
-
         else:
             # Add the current user as owner
             self.created_by = created_by
@@ -66,3 +66,35 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         exclude = ('created_by', 'slug')
+
+
+class GuestForm(forms.ModelForm):
+    """Form to handle specific validations of the Guest model."""
+    required_css_class = 'requiredField'
+
+    def __init__(self, event, user, *args, **kwargs):
+        """
+        :event: Event to participate
+        :user: Current user or anonymous.
+
+        """
+        self.event = event
+        self.user = user
+        super(GuestForm, self).__init__(*args, **kwargs)
+
+    def clean_number_of_seats(self):
+        data = self.cleaned_data['number_of_seats'] or 1
+        if self.event.available_seats and self.event.get_free_seats() < data:
+            raise forms.ValidationError(
+                _('Sorry. There are only {0} seats left.'.format(
+                    self.event.get_free_seats())))
+        return data
+
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        self.instance.event = self.event
+        super(GuestForm, self).save(*args, **kwargs)
+
+    class Meta:
+        model = Guest
+        exclude = ('event', 'user')

@@ -4,8 +4,9 @@ from django.utils import timezone
 
 from django_libs.tests.factories import UserFactory
 
-from event_rsvp.forms import EventForm
-from event_rsvp.models import Event
+from event_rsvp.forms import EventForm, GuestForm
+from event_rsvp.models import Event, Guest
+from event_rsvp.tests.factories import EventFactory
 
 
 class EventFormTestCase(TestCase):
@@ -53,3 +54,18 @@ class EventFormTestCase(TestCase):
         self.assertTrue(form.is_valid())
         instance = form.save()
         self.assertEqual(instance.street, 'Barstreet')
+
+
+class GuestFormTestCase(TestCase):
+    """Tests for the ``GuestForm`` form class."""
+    longMessage = True
+
+    def test_validates_and_saves_input(self):
+        self.event = EventFactory(available_seats=20)
+        form = GuestForm(data={'number_of_seats': 100}, event=self.event,
+                         user=None)
+        self.assertFalse(form.is_valid())
+        form = GuestForm(data={}, event=self.event, user=None)
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertEqual(Guest.objects.all().count(), 1)

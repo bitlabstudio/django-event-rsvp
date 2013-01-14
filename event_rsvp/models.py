@@ -180,6 +180,18 @@ class Event(models.Model):
         return reverse('rsvp_event_create_from_template', kwargs={
             'pk': self.pk})
 
+    def get_free_seats(self):
+        reserved = self.guests.all().aggregate(models.Sum('number_of_seats'))
+        if self.available_seats:
+            return self.available_seats - int(reserved.get(
+                'number_of_seats__sum') or 0)
+        return _('Unlimited seats available.')
+
+    def is_bookable(self):
+        if self.start < timezone.now():
+            return False
+        return True
+
 
 class Guest(models.Model):
     """
@@ -195,7 +207,8 @@ class Guest(models.Model):
     """
     event = models.ForeignKey(
         'event_rsvp.Event',
-        verbose_name=_('User'),
+        verbose_name=_('Event'),
+        related_name='guests',
     )
 
     user = models.ForeignKey(
@@ -232,3 +245,8 @@ class Guest(models.Model):
         elif self.name or self.email:
             return '{0} - {1}'.format(self.name or self.email, self.event)
         return '{0} - {1}'.format(ugettext('anonymous'), self.event)
+
+    def save(self, *args, **kwargs):
+        if not self.number_of_seats:
+            self.number_of_seats = 1
+        super(Guest, self).save(*args, **kwargs)

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load url from future %}
 
 {% block main %}
 <h1>{{ object }}</h1>
@@ -78,4 +79,24 @@
         <th>{% trans "Maximum amount of seats per guest" %}</th>
         <td>{{ object.max_seats_per_guest }}</td>
     </tr>
+    {% if user.is_staff %}
+        <tr>
+            <th>{% trans "Free seats" %}</th>
+            <td>{{ object.get_free_seats }}</td>
+        </tr>
+    {% endif %}
+</table>
+{% if user.is_staff %}
+    <ul>
+        {% for guest in object.guests.all %}
+            <li><a href="{% url "rsvp_guest_detail" pk=guest.pk event_slug=object.slug %}">{{ guest }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    {% if object.get_free_seats < 1 and object.is_bookable %}
+        <p>{% trans "We're sorry. The event is fully booked." %}</p>
+    {% elif object.is_bookable %}
+        <a href="{% url "rsvp_guest_create" event_slug=object.slug %}">{% trans "Participate" %}</a>
+    {% endif %}
+{% endif %}
 {% endblock %}

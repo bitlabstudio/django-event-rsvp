@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block main %}
+<h1>{{ object }}</h1>
+<table>
+    <tr>
+        <th>{% trans "Event" %}</th>
+        <td>{{ object.event }}</td>
+    </tr>
+    {% if object.user %}
+        <tr>
+            <th>{% trans "User" %}</th>
+            <td>{{ object.user }}</td>
+        </tr>
+    {% endif %}
+    {% if object.name %}
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <td>{{ object.name }}</td>
+        </tr>
+    {% endif %}
+    {% if object.email %}
+        <tr>
+            <th>{% trans "Email" %}</th>
+            <td>{{ object.email }}</td>
+        </tr>
+    {% endif %}
+    {% if object.number_of_seats %}
+        <tr>
+            <th>{% trans "Number of seats" %}</th>
+            <td>{{ object.number_of_seats }}</td>
+        </tr>
+    {% endif %}
+    {% if object.creation_date %}
+        <tr>
+            <th>{% trans "Creation date" %}</th>
+            <td>{{ object.creation_date }}</td>
+        </tr>
+    {% endif %}
+</table>
+<a href="{% url "rsvp_guest_delete" pk=object.pk event_slug=object.event.slug %}">{% trans "Delete this guest" %}</a>
+{% endblock %}

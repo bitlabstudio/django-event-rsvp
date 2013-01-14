@@ -5,8 +5,21 @@ from django.utils import timezone
 from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
 
-from event_rsvp.models import Event
-from event_rsvp.tests.factories import EventFactory, StaffFactory
+from event_rsvp.models import Event, Guest
+from event_rsvp.tests.factories import EventFactory, GuestFactory, StaffFactory
+
+
+class EventListViewTestCase(ViewTestMixin, TestCase):
+    """Tests for the ``EventListView`` view."""
+    longMessage = True
+
+    def get_view_name(self):
+        return 'rsvp_event_list'
+
+    def test_view(self):
+        self.should_be_callable_when_anonymous()
+        self.user = UserFactory()
+        self.should_be_callable_when_authenticated(self.user)
 
 
 class EventDetailViewTestCase(ViewTestMixin, TestCase):
@@ -129,3 +142,63 @@ class StaffDashboardViewTestCase(ViewTestMixin, TestCase):
     def test_view(self):
         staff = StaffFactory()
         self.is_callable(user=staff)
+
+
+class GuestCreateViewTestCase(ViewTestMixin, TestCase):
+    """Tests for the ``GuestCreateView`` view."""
+    longMessage = True
+
+    def setUp(self):
+        self.event = EventFactory()
+        self.user = UserFactory()
+
+    def get_view_name(self):
+        return 'rsvp_guest_create'
+
+    def get_view_kwargs(self):
+        return {'event_slug': self.event.slug}
+
+    def test_view(self):
+        # Wrong event slug
+        self.is_not_callable(kwargs={'event_slug': 'bullshit'})
+
+        self.should_be_callable_when_anonymous()
+        self.is_callable('POST', data={}, user=self.user)
+        self.assertEqual(Guest.objects.all().count(), 1)
+
+
+class GuestDeleteViewTestCase(ViewTestMixin, TestCase):
+    """Tests for the ``GuestDeleteView`` view."""
+    longMessage = True
+
+    def setUp(self):
+        self.guest = GuestFactory()
+        self.staff = StaffFactory()
+
+    def get_view_name(self):
+        return 'rsvp_guest_delete'
+
+    def get_view_kwargs(self):
+        return {'pk': self.guest.pk, 'event_slug': self.guest.event.slug}
+
+    def test_view(self):
+        self.is_callable('POST', data={'Foo': 'Bar'}, user=self.staff)
+        self.assertEqual(Guest.objects.all().count(), 0)
+
+
+class GuestDetailViewTestCase(ViewTestMixin, TestCase):
+    """Tests for the ``GuestDetailView`` view."""
+    longMessage = True
+
+    def setUp(self):
+        self.guest = GuestFactory()
+        self.staff = StaffFactory()
+
+    def get_view_name(self):
+        return 'rsvp_guest_detail'
+
+    def get_view_kwargs(self):
+        return {'pk': self.guest.pk, 'event_slug': self.guest.event.slug}
+
+    def test_view(self):
+        self.should_be_callable_when_authenticated(self.staff)

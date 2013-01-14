@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block main %}
+<h1>{% trans "Upcoming events" %}</h1>
+<ul>
+    {% for event in object_list %}
+        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> {% if event.get_free_seats < 1 %}{% trans "Fully booked." %}{% endif %}</li>
+    {% endfor %}
+</ul>
+
+<h1>{% trans "My events" %}</h1>
+<ul>
+    {% for guest in my_participations %}
+        <li><a href="{% url "rsvp_guest_update" pk=guest.pk event_slug=guest.event.slug %}">{{ guest }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

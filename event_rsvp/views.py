@@ -13,8 +13,8 @@ from django.views.generic import (
     UpdateView,
 )
 
-from event_rsvp.forms import EventForm
-from event_rsvp.models import Event
+from event_rsvp.forms import EventForm, GuestForm
+from event_rsvp.models import Event, Guest
 
 
 #--------#
@@ -63,9 +63,48 @@ class EventSecurityMixin(object):
                                                         **kwargs)
 
 
+class GuestViewMixin(object):
+    """Mixin to handle guest-specific functions."""
+    model = Guest
+    form_class = GuestForm
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.event = Event.objects.get(slug=kwargs.get('event_slug'))
+        except Event.DoesNotExist:
+            raise Http404
+        return super(GuestViewMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(GuestViewMixin, self).get_context_data(**kwargs)
+        context.update({'event': self.event, 'user': self.request.user})
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(GuestViewMixin, self).get_form_kwargs()
+        kwargs.update({'event': self.event, 'user': self.request.user})
+        return kwargs
+
+    def get_success_url(self):
+        return self.event.get_absolute_url()
+
+
 #--------#
 # Views  #
 #--------#
+
+class EventListView(ListView):
+    """List view to display upcoming events."""
+    def get_queryset(self):
+        return Event.objects.filter(start__gt=timezone.now())
+
+    def get_context_data(self, **kwargs):
+        context = super(EventListView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+            context.update({
+                'my_participations': self.request.user.guest_set.all()})
+        return context
+
 
 class EventDetailView(EventSecurityMixin, EventViewMixin, DetailView):
     """Detail view to display information of an event."""
@@ -85,7 +124,7 @@ class EventUpdateView(StaffMixin, EventSecurityMixin, EventViewMixin,
 
 class EventDeleteView(StaffMixin, EventSecurityMixin, EventViewMixin,
                       DeleteView):
-    """Update view to handle information of an event."""
+    """Delete view to remove the relevant event."""
     url_mode = 'delete'
 
 
@@ -126,3 +165,23 @@ class StaffDashboardView(StaffMixin, ListView):
             'templates': templates,
         })
         return context
+
+
+class GuestDetailView(StaffMixin, GuestViewMixin, DetailView):
+    """View to display guest related functions and lists."""
+    pass
+
+
+class GuestCreateView(GuestViewMixin, CreateView):
+    """Create view to add a guest to an event."""
+    pass
+
+
+class GuestUpdateView(GuestViewMixin, UpdateView):
+    """Update view to handle a guest."""
+    pass
+
+
+class GuestDeleteView(StaffMixin, GuestViewMixin, DeleteView):
+    """Delete view to remove the relevant guest."""
+    pass
