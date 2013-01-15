@@ -1,1 +1,10 @@
+<form action="/i18n/setlang/" method="post">
+    <input name="next" type="hidden" value="/about-us/guest/create/" />
+    <select name="language">
+        {% for lang in LANGUAGES %}
+            <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go" />
+</form>
 {% block main %}{% endblock %}

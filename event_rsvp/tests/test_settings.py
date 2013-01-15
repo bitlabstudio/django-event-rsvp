@@ -5,6 +5,30 @@ DEBUG = True
 
 SITE_ID = 1
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+)
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+)
+
+ugettext = lambda s: s
+
+LANGUAGES = (
+    ('de', ugettext('German')),
+    ('en', ugettext('English')),
+)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -14,7 +38,6 @@ DATABASES = {
 
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
-    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 )
 
 ROOT_URLCONF = 'event_rsvp.tests.urls'

@@ -1,0 +1,299 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-01-15 03:11-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:93
+msgid "Sorry. There is only 1 seat left."
+msgstr "Bitte entschuldigen Sie. Es ist nur noch ein Platz verfügbar."
+
+#: forms.py:95
+#, python-format
+msgid "Sorry. There are only %(amount)s seats left."
+msgstr "Bitte entschuldigen Sie. Es sind nur noch %(amount)s Plätze verfügbar."
+
+#: forms.py:100
+msgid "Pardon. There is only 1 seat per person reservable."
+msgstr "Bitte entschuldigen Sie. Es ist nur 1 Platz pro Person reservierbar."
+
+#: forms.py:102
+#, python-format
+msgid "Pardon. There are only %(amount)s seats per person reservable."
+msgstr "Pardon. Es sind nur %(amount)s Plätze pro Person reservierbar."
+
+#: forms.py:112
+msgid "Your name is required for this event."
+msgstr "Ihr Name wird für die Reservierung benötigt."
+
+#: forms.py:119
+msgid "Your email is required for this event."
+msgstr "Ihre Email-Adresse wird für die Reservierung benötigt."
+
+#: models.py:38
+msgid "Created by"
+msgstr "Erstellt von"
+
+#: models.py:43 models.py:238 templates/event_rsvp/guest_detail.html:38
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+#: models.py:48 templates/event_rsvp/event_detail.html:9
+msgid "Title"
+msgstr "Titel"
+
+#: models.py:49
+msgid "The title will also be used for the event URL."
+msgstr "Der Titel wird ebenfalls für den Slug verwendet."
+
+#: models.py:53
+msgid "Slug"
+msgstr "Slug"
+
+#: models.py:58 templates/event_rsvp/event_detail.html:14
+msgid "Description"
+msgstr "Beschreibung"
+
+#: models.py:64
+msgid "Start date"
+msgstr "Startdatum"
+
+#: models.py:69
+msgid "End date"
+msgstr "Enddatum"
+
+#: models.py:74 templates/event_rsvp/event_detail.html:27
+msgid "Venue"
+msgstr ""
+
+#: models.py:79 templates/event_rsvp/event_detail.html:32
+msgid "Street"
+msgstr ""
+
+#: models.py:85 templates/event_rsvp/event_detail.html:38
+msgid "City"
+msgstr ""
+
+#: models.py:91 templates/event_rsvp/event_detail.html:44
+msgid "ZIP code"
+msgstr ""
+
+#: models.py:97 templates/event_rsvp/event_detail.html:50
+msgid "Country"
+msgstr ""
+
+#: models.py:103
+msgid "Contact name"
+msgstr ""
+
+#: models.py:108
+msgid "Contact email"
+msgstr ""
+
+#: models.py:114
+msgid "Contact phone"
+msgstr ""
+
+#: models.py:119 templates/event_rsvp/event_detail.html:74
+msgid "Available seats"
+msgstr ""
+
+#: models.py:125
+msgid "Allow anonymous RSVP"
+msgstr ""
+
+#: models.py:126
+msgid "Even anonymous users can rsvp, without adding any info."
+msgstr ""
+
+#: models.py:131
+msgid "Require name & email"
+msgstr ""
+
+#: models.py:132
+msgid "Check to require at least a name and a mail."
+msgstr ""
+
+#: models.py:137 templates/event_rsvp/event_detail.html:79
+msgid "Maximum amount of seats per guest"
+msgstr ""
+
+#: models.py:142
+msgid "Save as template"
+msgstr ""
+
+#: models.py:144
+msgid "Save this event as a template to re-use it later."
+msgstr ""
+
+#: models.py:149
+msgid "Template"
+msgstr ""
+
+#: models.py:188 tests/models_tests.py:20
+msgid "Unlimited seats available."
+msgstr ""
+
+#: models.py:210 templates/event_rsvp/guest_detail.html:9
+msgid "Event"
+msgstr ""
+
+#: models.py:216 templates/event_rsvp/guest_detail.html:14
+msgid "User"
+msgstr ""
+
+#: models.py:222 templates/event_rsvp/guest_detail.html:20
+msgid "Name"
+msgstr ""
+
+#: models.py:227 templates/event_rsvp/event_detail.html:62
+#: templates/event_rsvp/guest_detail.html:26
+msgid "Email"
+msgstr ""
+
+#: models.py:232 templates/event_rsvp/guest_detail.html:32
+msgid "Number of seats"
+msgstr "Anzahl der Plätze"
+
+#: models.py:247
+msgid "anonymous"
+msgstr ""
+
+#: templates/event_rsvp/event_confirm_delete.html:5
+#: templates/event_rsvp/event_confirm_delete.html:9
+#: templates/event_rsvp/guest_confirm_delete.html:5
+#: templates/event_rsvp/guest_confirm_delete.html:9
+#: templates/event_rsvp/staff_dashboard.html:22
+#: templates/event_rsvp/staff_dashboard.html:29
+#: templates/event_rsvp/staff_dashboard.html:36
+#: templates/event_rsvp/staff_dashboard.html:43
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/event_rsvp/event_confirm_delete.html:8
+msgid "Do you want to delete this event?"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:19
+msgid "Starting"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:23
+msgid "Ending"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:56
+msgid "Contact"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:68
+msgid "Phone"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:84
+msgid "Free seats"
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:97
+#: templates/event_rsvp/guest_form.html:22
+msgid "We're sorry. The event is fully booked."
+msgstr ""
+
+#: templates/event_rsvp/event_detail.html:99
+msgid "Participate"
+msgstr "Teilnehmen"
+
+#: templates/event_rsvp/event_form.html:7
+#: templates/event_rsvp/staff_dashboard.html:22
+#: templates/event_rsvp/staff_dashboard.html:29
+#: templates/event_rsvp/staff_dashboard.html:36
+#: templates/event_rsvp/staff_dashboard.html:43
+msgid "Update"
+msgstr ""
+
+#: templates/event_rsvp/event_form.html:9
+#: templates/event_rsvp/staff_dashboard.html:7
+msgid "Create event"
+msgstr ""
+
+#: templates/event_rsvp/event_form.html:16
+#: templates/event_rsvp/guest_form.html:17
+msgid "Save"
+msgstr ""
+
+#: templates/event_rsvp/event_list.html:6
+#: templates/event_rsvp/staff_dashboard.html:11
+msgid "Upcoming events"
+msgstr "Kommende Events"
+
+#: templates/event_rsvp/event_list.html:9
+msgid "Fully booked."
+msgstr ""
+
+#: templates/event_rsvp/event_list.html:13
+msgid "My events"
+msgstr ""
+
+#: templates/event_rsvp/guest_confirm_delete.html:8
+msgid "Do you want to delete this guest?"
+msgstr ""
+
+#: templates/event_rsvp/guest_detail.html:43
+msgid "Delete this guest"
+msgstr ""
+
+#: templates/event_rsvp/guest_form.html:7
+msgid "Update participation on"
+msgstr ""
+
+#: templates/event_rsvp/guest_form.html:9
+msgid "Participate on"
+msgstr "Reservierung für"
+
+#: templates/event_rsvp/guest_form.html:20
+msgid "We're sorry. The event has already started."
+msgstr ""
+
+#: templates/event_rsvp/guest_form.html:24
+msgid "We're sorry. You need to be logged in to book this event."
+msgstr ""
+
+#: templates/event_rsvp/staff_dashboard.html:6
+msgid "Dashboard"
+msgstr ""
+
+#: templates/event_rsvp/staff_dashboard.html:12
+msgid "Current events"
+msgstr ""
+
+#: templates/event_rsvp/staff_dashboard.html:13
+msgid "Past events"
+msgstr ""
+
+#: templates/event_rsvp/staff_dashboard.html:14
+msgid "Templates"
+msgstr ""
+
+#: templates/event_rsvp/staff_dashboard.html:43
+msgid "Use template for new event"
+msgstr ""
+
+#: tests/test_settings.py:28
+msgid "German"
+msgstr ""
+
+#: tests/test_settings.py:29
+msgid "English"
+msgstr ""

@@ -90,19 +90,18 @@ class GuestForm(forms.ModelForm):
         free_seats = self.event.get_free_seats()
         if self.event.available_seats and free_seats < data:
             if free_seats == 1:
-                msg = _('Sorry. There is only {0} seat left.'.format(
-                    free_seats))
+                msg = _('Sorry. There is only 1 seat left.')
             else:
-                msg = _('Sorry. There are only {0} seats left.'.format(
-                    free_seats))
+                msg = _('Sorry. There are only %(amount)s seats left.') % {
+                    'amount': free_seats}
             raise forms.ValidationError(msg)
         if data > self.event.max_seats_per_guest:
             if self.event.max_seats_per_guest == 1:
-                msg = _('Pardon. There is only {0} seat per person'
-                        ' reservable.'.format(self.event.max_seats_per_guest))
+                msg = _('Pardon. There is only 1 seat per person reservable.')
             else:
-                msg = _('Pardon. There are only {0} seats per person'
-                        ' reservable.'.format(self.event.max_seats_per_guest))
+                msg = _('Pardon. There are only %(amount)s seats per person'
+                        ' reservable.') % {
+                            'amount': self.event.max_seats_per_guest}
             raise forms.ValidationError(msg)
         return data
 
