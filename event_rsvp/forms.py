@@ -12,9 +12,9 @@ class EventForm(forms.ModelForm):
     def __init__(self, created_by, create_from_template=False, *args,
                  **kwargs):
         """
-        :created_by: Django-Auth User model, which is calling this view
-        :create_from_template: Boolean to know, if someone is using a template
-                               as draft.
+        :param created_by: Django-Auth User model, which is calling this view
+        :param create_from_template: Boolean to know, if someone is using a
+                                     template as draft.
 
         """
         self.instance = kwargs.get('instance')
@@ -74,8 +74,8 @@ class GuestForm(forms.ModelForm):
 
     def __init__(self, event, user, *args, **kwargs):
         """
-        :event: Event to participate
-        :user: Current user or anonymous.
+        :param event: Event to participate
+        :param user: Current user or anonymous.
 
         """
         self.event = event

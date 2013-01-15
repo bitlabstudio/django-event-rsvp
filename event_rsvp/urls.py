@@ -18,69 +18,49 @@ from event_rsvp.views import (
 
 urlpatterns = patterns(
     '',
-    url(
-        r'^$',
+    url(r'^$',
         EventListView.as_view(),
-        name='rsvp_event_list',
-    ),
+        name='rsvp_event_list'),
 
-    url(
-        r'^create/$',
+    url(r'^create/$',
         EventCreateView.as_view(),
-        name='rsvp_event_create',
-    ),
+        name='rsvp_event_create'),
 
-    url(
-        r'^create-from-template/(?P<pk>\d+)/$',
+    url(r'^create-from-template/(?P<pk>\d+)/$',
         EventCreateFromTemplateView.as_view(),
-        name='rsvp_event_create_from_template',
-    ),
+        name='rsvp_event_create_from_template'),
 
-    url(
-        r'^event-staff/$',
+    url(r'^event-staff/$',
         StaffDashboardView.as_view(),
-        name='rsvp_event_staff',
-    ),
+        name='rsvp_event_staff'),
 
-    url(
-        r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/delete/$',  # nopep8
+    url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/'
+        'delete/$',
         EventDeleteView.as_view(),
-        name='rsvp_event_delete',
-    ),
+        name='rsvp_event_delete'),
 
-    url(
-        r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/update/$',  # nopep8
+    url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/'
+        'update/$',
         EventUpdateView.as_view(),
-        name='rsvp_event_update',
-    ),
+        name='rsvp_event_update'),
 
-    url(
-        r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/$',
+    url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/$',
         EventDetailView.as_view(),
-        name='rsvp_event_detail',
-    ),
+        name='rsvp_event_detail'),
 
-    url(
-        r'^guest/(?P<event_slug>[-\w]+)/create/$',
+    url(r'^(?P<event_slug>[-\w]+)/guest/create/$',
         GuestCreateView.as_view(),
-        name='rsvp_guest_create',
-    ),
+        name='rsvp_guest_create'),
 
-    url(
-        r'^guest/(?P<event_slug>[-\w]+)/(?P<pk>\d+)/update/$',
+    url(r'^(?P<event_slug>[-\w]+)/guest/(?P<pk>\d+)/update/$',
         GuestUpdateView.as_view(),
-        name='rsvp_guest_update',
-    ),
+        name='rsvp_guest_update'),
 
-    url(
-        r'^guest/(?P<event_slug>[-\w]+)/(?P<pk>\d+)/delete/$',
+    url(r'^(?P<event_slug>[-\w]+)/guest/(?P<pk>\d+)/delete/$',
         GuestDeleteView.as_view(),
-        name='rsvp_guest_delete',
-    ),
+        name='rsvp_guest_delete'),
 
-    url(
-        r'^guest/(?P<event_slug>[-\w]+)/(?P<pk>\d+)/$',
+    url(r'^(?P<event_slug>[-\w]+)/guest/(?P<pk>\d+)/$',
         GuestDetailView.as_view(),
-        name='rsvp_guest_detail',
-    ),
+        name='rsvp_guest_detail'),
 )
