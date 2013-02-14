@@ -59,7 +59,7 @@ class EventForm(forms.ModelForm):
                              created_by=self.created_by)
             self.instance.template_name = ''
             self.instance.save()
-            return forms.models.save_instance(
+            forms.models.save_instance(
                 self, template, self._meta.fields, 'created', commit, False)
         return self.instance
 

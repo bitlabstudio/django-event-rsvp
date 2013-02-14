@@ -44,12 +44,13 @@ class EventFormTestCase(TestCase):
         data.update({'template_name': 'Foo'})
         form = EventForm(data=data, created_by=self.user)
         self.assertTrue(form.is_valid())
-        instance = form.save()
+        form.save()
         self.assertEqual(
             Event.objects.exclude(template_name__exact='').count(), 1)
 
         # Test updating a template
         data.update({'street': 'Barstreet'})
+        instance = Event.objects.get(template_name='Foo')
         form = EventForm(data=data, instance=instance, created_by=self.user)
         self.assertTrue(form.is_valid())
         instance = form.save()
