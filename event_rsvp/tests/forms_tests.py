@@ -85,11 +85,6 @@ class GuestFormTestCase(TestCase):
                          user=None)
         self.assertFalse(form.is_valid())
 
-        # Test ignoring required name and email
-        self.event = EventFactory(require_name_and_email=True)
-        form = GuestForm(data={}, event=self.event, user=None)
-        self.assertFalse(form.is_valid())
-
         # Test valid form
         form = GuestForm(data={'name': 'Foo', 'email': 'test@example.com'},
                          event=self.event, user=None)

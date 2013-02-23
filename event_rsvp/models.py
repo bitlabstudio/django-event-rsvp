@@ -1,10 +1,95 @@
 """Models for the ``event_rsvp`` application."""
+from django import forms
+from django.core import exceptions
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import date, slugify
 from django.utils import timezone
+from django.utils.text import capfirst
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
+
+
+class MultiSelectFormField(forms.MultipleChoiceField):
+    widget = forms.CheckboxSelectMultiple
+
+    def __init__(self, *args, **kwargs):
+        self.max_choices = kwargs.pop('max_choices', 0)
+        super(MultiSelectFormField, self).__init__(*args, **kwargs)
+
+    def clean(self, value):
+        if not value and self.required:
+            raise forms.ValidationError(self.error_messages['required'])
+        # if value and self.max_choices and len(value) > self.max_choices:
+        #     raise forms.ValidationError('You must select a maximum of %s choice%s.'
+        #             % (apnumber(self.max_choices), pluralize(self.max_choices)))
+        return value
+
+
+class MultiSelectField(models.Field):
+    __metaclass__ = models.SubfieldBase
+
+    def get_internal_type(self):
+        return "CharField"
+
+    def get_choices_default(self):
+        return self.get_choices(include_blank=False)
+
+    def _get_FIELD_display(self, field):
+        value = getattr(self, field.attname)
+        choicedict = dict(field.choices)
+
+    def formfield(self, **kwargs):
+        # don't call super, as that overrides default widget if it has choices
+        defaults = {'required': not self.blank, 'label': capfirst(self.verbose_name),
+                    'help_text': self.help_text, 'choices': self.choices}
+        if self.has_default():
+            defaults['initial'] = self.get_default()
+        defaults.update(kwargs)
+        return MultiSelectFormField(**defaults)
+
+    def get_prep_value(self, value):
+        return value
+
+    def get_db_prep_value(self, value, connection=None, prepared=False):
+        if isinstance(value, basestring):
+            return value
+        elif isinstance(value, list):
+            return ",".join(value)
+
+    def to_python(self, value):
+        if value is not None:
+            return value if isinstance(value, list) else value.split(',')
+        return ''
+
+    def contribute_to_class(self, cls, name):
+        super(MultiSelectField, self).contribute_to_class(cls, name)
+        if self.choices:
+            func = lambda self, fieldname = name, choicedict = dict(self.choices): ",".join([choicedict.get(value, value) for value in getattr(self, fieldname)])
+            setattr(cls, 'get_%s_display' % self.name, func)
+
+    def validate(self, value, model_instance):
+        arr_choices = self.get_choices_selected(self.get_choices_default())
+        for opt_select in value:
+            if opt_select not in arr_choices:
+                raise exceptions.ValidationError(self.error_messages['invalid_choice'] % value)
+        return
+
+    def get_choices_selected(self, arr_choices=''):
+        if not arr_choices:
+            return False
+        list = []
+        for choice_selected in arr_choices:
+            list.append(choice_selected[0])
+        return list
+
+    def value_to_string(self, obj):
+        value = self._get_val_from_obj(obj)
+        return self.get_db_prep_value(value)
+
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^event_rsvp\.models\.MultiSelectField"])
 
 
 class Event(models.Model):
@@ -28,8 +113,7 @@ class Event(models.Model):
     :available_seats: Amount of seats available for this event.
     :max_seats_per_guest: Maximum amount of seats per guest.
     :allow_anonymous_rsvp: Checkbox to allow anonymous responses.
-    :require_name_and_email: Checkbox to require a name and an email within the
-                             response.
+    :required_fields: Checkbox to select required guest fields.
     :template_name: Name can be set, if this event should be reusable.
 
     """
@@ -126,10 +210,14 @@ class Event(models.Model):
         help_text=_('Even anonymous users can rsvp, without adding any info.'),
     )
 
-    require_name_and_email = models.BooleanField(
-        default=False,
-        verbose_name=_('Require name & email'),
-        help_text=_('Check to require at least a name and a mail.'),
+    required_fields = MultiSelectField(
+        verbose_name=_('Required fields'),
+        max_length=250, blank=True,
+        choices=(
+            ('name', _('Name')),
+            ('email', _('Email')),
+            ('phone', _('Phone')),
+        ),
     )
 
     max_seats_per_guest = models.PositiveIntegerField(
@@ -147,7 +235,7 @@ class Event(models.Model):
     def __unicode__(self):
         if self.template_name:
             return '{0} ({1})'.format(self.template_name, ugettext('Template'))
-        return '{0} ({1})'.format(self.title, self.start)
+        return '{0} ({1})'.format(self.title, date(self.start))
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -201,6 +289,7 @@ class Guest(models.Model):
     :user: User model of the guest.
     :name: Name of the guest.
     :email: Email of the guest.
+    :phone: Phone number of the guest.
     :number_of_seats: Amount of seats to book.
     :creation_date: Date of the guest model creation.
 
@@ -225,6 +314,12 @@ class Guest(models.Model):
 
     email = models.EmailField(
         verbose_name=_('Email'),
+        blank=True,
+    )
+
+    phone = models.CharField(
+        max_length=50,
+        verbose_name=_('Phone'),
         blank=True,
     )
 

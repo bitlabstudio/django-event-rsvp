@@ -105,20 +105,6 @@ class GuestForm(forms.ModelForm):
             raise forms.ValidationError(msg)
         return data
 
-    def clean_name(self):
-        if self.event.require_name_and_email:
-            if not self.cleaned_data['name']:
-                raise forms.ValidationError(
-                    _('Your name is required for this event.'))
-        return self.cleaned_data['name']
-
-    def clean_email(self):
-        if self.event.require_name_and_email:
-            if not self.cleaned_data['email']:
-                raise forms.ValidationError(
-                    _('Your email is required for this event.'))
-        return self.cleaned_data['email']
-
     def save(self, *args, **kwargs):
         self.instance.user = self.user
         self.instance.event = self.event
