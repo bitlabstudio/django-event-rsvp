@@ -84,6 +84,10 @@ class GuestForm(forms.ModelForm):
         else:
             self.user = None
         super(GuestForm, self).__init__(*args, **kwargs)
+        if self.event.id:
+            for field in self.event.required_fields:
+                if field:
+                    self.fields[field].required = True
 
     def clean_number_of_seats(self):
         data = self.cleaned_data['number_of_seats'] or 1

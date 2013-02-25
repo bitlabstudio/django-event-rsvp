@@ -12,6 +12,7 @@ South==0.7.6
 # ==============================================================
 factory-boy==1.2.0
 django-libs==0.14
+ipdb==0.7
 Fabric
 mock
 django-nose

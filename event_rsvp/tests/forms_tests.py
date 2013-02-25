@@ -85,8 +85,14 @@ class GuestFormTestCase(TestCase):
                          user=None)
         self.assertFalse(form.is_valid())
 
-        # Test valid form
+        # Test missing required fields
+        self.event = EventFactory(required_fields=['name', 'phone'])
         form = GuestForm(data={'name': 'Foo', 'email': 'test@example.com'},
+                         event=self.event, user=None)
+        self.assertFalse(form.is_valid())
+
+        # Test valid form
+        form = GuestForm(data={'name': 'Foo', 'phone': '+4911111111'},
                          event=self.event, user=None)
         self.assertTrue(form.is_valid())
         form.save()
