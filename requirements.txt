@@ -4,6 +4,7 @@
 # Packages essential to this app. Needed by anyone who wants to use this app.
 # ===========================================================================
 django==1.4.3
+django-cms==2.3.5
 South==0.7.6
 
 

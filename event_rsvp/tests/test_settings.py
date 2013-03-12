@@ -13,6 +13,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    'django.core.context_processors.request',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -73,6 +74,9 @@ EXTERNAL_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.sites',
     'django_nose',
+    'cms',
+    'mptt',
+    'sekizai',
 ]
 
 INTERNAL_APPS = [
@@ -89,4 +93,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+)
+
+# django-cms settings
+gettext = lambda s: s
+
+CMS_TEMPLATES = (
+    ('base.html', gettext('default')),
 )

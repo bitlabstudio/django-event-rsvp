@@ -1,3 +1,4 @@
+{% load sekizai_tags %}
 <form action="/i18n/setlang/" method="post">
     <input name="next" type="hidden" value="/about-us/guest/create/" />
     <select name="language">
@@ -8,3 +9,5 @@
     <input type="submit" value="Go" />
 </form>
 {% block main %}{% endblock %}
+{% render_block "css" %}
+{% render_block "js" %}
