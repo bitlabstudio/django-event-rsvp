@@ -81,6 +81,7 @@ EXTERNAL_APPS = [
 
 INTERNAL_APPS = [
     'event_rsvp',
+    'event_rsvp.tests.test_app',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
