@@ -6,7 +6,9 @@
 <h1>{% trans "Upcoming events" %}</h1>
 <ul>
     {% for event in object_list %}
-        <li><a href="{{ event.get_absolute_url }}">{{ event }}</a> {% if event.get_free_seats < 1 %}{% trans "Fully booked." %}{% endif %}</li>
+        <li>
+            {% include "event_rsvp/partials/event_item.html" %}
+        </li>
     {% endfor %}
 </ul>
 

@@ -1,8 +1,6 @@
 {% load i18n %}
 {% for event in events %}
     <div>
-        <p>{{ event.start|date }}</p>
-        <a href="{{ event.get_absolute_url }}">{{ event }}</a> {% if event.get_free_seats < 1 %}{% trans "Fully booked." %}{% endif %}
-        <p>{{ event.description }}</p>
+        {% include "event_rsvp/partials/event_item.html" %}
     </div>
 {% endfor %}

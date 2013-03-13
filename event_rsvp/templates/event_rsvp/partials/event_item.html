@@ -1,0 +1,4 @@
+{% load i18n %}
+<p>{{ event.start|date }}</p>
+<a href="{{ event.get_absolute_url }}">{{ event }}</a> {% if event.get_free_seats < 1 %}{% trans "Fully booked." %}{% endif %}
+<p>{{ event.description }}</p>
