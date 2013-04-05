@@ -285,6 +285,8 @@ class Guest(models.Model):
     :phone: Phone number of the guest.
     :number_of_seats: Amount of seats to book.
     :creation_date: Date of the guest model creation.
+    :is_attending: If the user is attending or not. Default: True
+    :message: A response from a potential attendee.
 
     """
     event = models.ForeignKey(
@@ -324,6 +326,17 @@ class Guest(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Creation date'),
+    )
+
+    is_attending = models.BooleanField(
+        verbose_name=_('Attending'),
+        default=True,
+    )
+
+    message = models.TextField(
+        verbose_name=_('Message'),
+        max_length=4000,
+        blank=True,
     )
 
     def __unicode__(self):

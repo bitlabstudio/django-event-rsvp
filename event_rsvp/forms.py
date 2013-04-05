@@ -116,4 +116,4 @@ class GuestForm(forms.ModelForm):
 
     class Meta:
         model = Guest
-        exclude = ('event', 'user')
+        fields = ('name', 'email', 'phone', 'number_of_seats', 'message')
