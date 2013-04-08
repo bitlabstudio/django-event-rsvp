@@ -221,7 +221,7 @@ class Event(models.Model):
     )
 
     max_seats_per_guest = models.PositiveIntegerField(
-        default=1,
+        blank=True, null=True,
         verbose_name=_('Maximum amount of seats per guest'),
     )
 

@@ -20,7 +20,6 @@ class EventFormTestCase(TestCase):
             'venue': 'Bar',
             'start': timezone.now(),
             'end': timezone.now() + timezone.timedelta(days=11),
-            'max_seats_per_guest': 1,
         }
         form = EventForm(data=data, created_by=self.user)
         self.assertTrue(form.is_valid())
@@ -69,7 +68,7 @@ class GuestFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
         # Test exceeding available seats (plural error msg)
-        self.event = EventFactory(available_seats=20)
+        self.event = EventFactory(available_seats=20, max_seats_per_guest=1)
         form = GuestForm(data={'number_of_seats': 100}, event=self.event,
                          user=None)
         self.assertFalse(form.is_valid())

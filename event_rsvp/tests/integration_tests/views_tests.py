@@ -124,7 +124,6 @@ class EventCreateFromTemplateViewTestCase(ViewTestMixin, TestCase):
             'venue': self.event.venue,
             'start': self.event.start,
             'end': self.event.end,
-            'max_seats_per_guest': self.event.max_seats_per_guest,
         }
         self.is_callable('POST', data=data, user=self.staff)
 

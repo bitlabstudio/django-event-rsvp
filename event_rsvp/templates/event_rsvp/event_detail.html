@@ -75,10 +75,12 @@
             <td>{{ object.available_seats }}</td>
         </tr>
     {% endif %}
-    <tr>
-        <th>{% trans "Maximum amount of seats per guest" %}</th>
-        <td>{{ object.max_seats_per_guest }}</td>
-    </tr>
+    {% if object.max_seats_per_guest %}
+        <tr>
+            <th>{% trans "Maximum amount of seats per guest" %}</th>
+            <td>{{ object.max_seats_per_guest }}</td>
+        </tr>
+    {% endif %}
     {% if user.is_staff %}
         <tr>
             <th>{% trans "Free seats" %}</th>
