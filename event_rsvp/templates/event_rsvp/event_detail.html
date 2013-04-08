@@ -69,7 +69,7 @@
             <td>{{ object.contact_phone }}</td>
         </tr>
     {% endif %}
-    {% if object.available_seats %}
+    {% if object.available_seats and not object.hide_available_seats %}
         <tr>
             <th>{% trans "Available seats" %}</th>
             <td>{{ object.available_seats }}</td>
