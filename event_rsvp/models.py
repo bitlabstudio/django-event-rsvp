@@ -104,6 +104,8 @@ class Event(models.Model):
     :contact_email: Email of a person to contact.
     :contact_phone: Phone of a person to contact.
     :available_seats: Amount of seats available for this event.
+    :hide_available_seats: Checkfield to hide the information about available
+      seats in the templates.
     :max_seats_per_guest: Maximum amount of seats per guest.
     :allow_anonymous_rsvp: Checkbox to allow anonymous responses.
     :required_fields: Checkbox to select required guest fields.
@@ -195,6 +197,11 @@ class Event(models.Model):
     available_seats = models.PositiveIntegerField(
         verbose_name=_('Available seats'),
         blank=True, null=True,
+    )
+
+    hide_available_seats = models.BooleanField(
+        default=False,
+        verbose_name=_('Hide available seat information'),
     )
 
     allow_anonymous_rsvp = models.BooleanField(
