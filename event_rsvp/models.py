@@ -121,7 +121,7 @@ class Event(models.Model):
     )
 
     title = models.CharField(
-        max_length=50,
+        max_length=256,
         verbose_name=_('Title'),
         help_text=_('The title will also be used for the event URL.'),
     )
