@@ -129,6 +129,7 @@ class Event(models.Model):
     )
 
     slug = models.SlugField(
+        max_length=256,
         verbose_name=_('Slug'),
     )
 
