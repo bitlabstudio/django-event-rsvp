@@ -1,6 +1,8 @@
 === ongoing ===
 
+=== 0.2.1 ===
 
+- added is_published filtering to cmsplugin
 
 === 0.2 ===
 
