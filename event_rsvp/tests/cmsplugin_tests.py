@@ -12,7 +12,7 @@ class CMSEventPluginTestCase(TestCase):
 
     def setUp(self):
         self.event = EventFactory(start=timezone.now() + timezone.timedelta(
-            days=1))
+            days=1), is_published=True)
         self.cmsplugin = CMSEventPlugin()
 
     def test_render(self):

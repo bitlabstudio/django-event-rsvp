@@ -14,7 +14,8 @@ class CMSEventPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context.update({
-            'events': Event.objects.filter(start__gt=now())[:3],
+            'events': Event.objects.filter(start__gt=now(),
+                                           is_published=True)[:3],
             'placeholder': placeholder,
         })
         return context
