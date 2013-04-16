@@ -110,6 +110,7 @@ class Event(models.Model):
     :allow_anonymous_rsvp: Checkbox to allow anonymous responses.
     :required_fields: Checkbox to select required guest fields.
     :template_name: Name can be set, if this event should be reusable.
+    :is_published: Checkbox to publish/unpublish an event.
 
     """
     created_by = models.ForeignKey(
@@ -231,6 +232,11 @@ class Event(models.Model):
         verbose_name=_('Save as template'),
         blank=True,
         help_text=_('Save this event as a template to re-use it later.'),
+    )
+
+    is_published = models.BooleanField(
+        verbose_name=_('is published'),
+        default=False,
     )
 
     def __unicode__(self):

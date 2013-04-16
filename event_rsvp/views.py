@@ -108,7 +108,8 @@ class GuestSecurityMixin(object):
 class EventListView(ListView):
     """List view to display upcoming events."""
     def get_queryset(self):
-        return Event.objects.filter(start__gt=timezone.now())
+        return Event.objects.filter(start__gt=timezone.now(),
+                                    is_published=True)
 
     def get_context_data(self, **kwargs):
         context = super(EventListView, self).get_context_data(**kwargs)
@@ -121,6 +122,13 @@ class EventListView(ListView):
 class EventDetailView(EventSecurityMixin, EventViewMixin, DetailView):
     """Detail view to display information of an event."""
     url_mode = 'absolute'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        self.object = self.get_object()
+        if not self.object.is_published and not request.user.is_staff:
+            raise Http404
+        return super(EventDetailView, self).dispatch(request, *args, **kwargs)
 
 
 class EventCreateView(StaffMixin, EventViewMixin, CreateView):

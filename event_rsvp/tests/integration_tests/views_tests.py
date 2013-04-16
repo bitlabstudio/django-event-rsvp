@@ -26,9 +26,16 @@ class EventDetailViewTestCase(ViewTestMixin, TestCase):
     """Tests for the ``EventDetailView`` view."""
     longMessage = True
 
+    def get_url(self, **kwargs):
+        return self.event.get_absolute_url()
+
     def test_view(self):
         self.event = EventFactory()
-        self.should_be_callable_when_anonymous(self.event.get_absolute_url())
+        self.is_not_callable()
+
+        self.event.is_published = True
+        self.event.save()
+        self.should_be_callable_when_anonymous()
 
         # Test with wrong url kwargs
         resp = self.client.get(self.event.get_absolute_url().replace('2', '1'))
