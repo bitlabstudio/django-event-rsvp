@@ -77,6 +77,7 @@ EXTERNAL_APPS = [
     'cms',
     'mptt',
     'sekizai',
+    'filer',
 ]
 
 INTERNAL_APPS = [

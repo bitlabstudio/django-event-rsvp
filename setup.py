@@ -23,6 +23,13 @@ setup(
     url="https://github.com/bitmazk/django-event-rsvp",
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+        'django>=1.4.3',
+        'django-cms>=2.3',
+        'django-filer',
+        'python-dateutil',
+        'South',
+    ],
     tests_require=[
         'fabric',
         'factory_boy',

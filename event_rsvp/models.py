@@ -9,6 +9,8 @@ from django.utils.text import capfirst
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 
+from filer.fields.image import FilerImageField
+
 
 class MultiSelectFormField(forms.MultipleChoiceField):
     widget = forms.CheckboxSelectMultiple
@@ -237,6 +239,12 @@ class Event(models.Model):
     is_published = models.BooleanField(
         verbose_name=_('is published'),
         default=False,
+    )
+
+    image = FilerImageField(
+        verbose_name=_('Image'),
+        related_name='rsvp_event_images',
+        null=True, blank=True,
     )
 
     def __unicode__(self):

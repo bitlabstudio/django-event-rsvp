@@ -1,5 +1,7 @@
 === ongoing ===
 
+- Added image field to Event model
+
 === 0.2.1 ===
 
 - added is_published filtering to cmsplugin

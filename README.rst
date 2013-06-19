@@ -26,6 +26,7 @@ Add ``event_rsvp`` to your ``INSTALLED_APPS``::
 
     INSTALLED_APPS = (
         ...,
+        'filer',
         'event_rsvp',
     )
 
