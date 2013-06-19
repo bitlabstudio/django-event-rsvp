@@ -1,5 +1,7 @@
 === ongoing ===
 
+=== 0.3 ===
+
 - Added image field to Event model
 
 === 0.2.1 ===
