@@ -1,5 +1,7 @@
 === ongoing ===
 
+=== 0.3.1 ===
+
 - Added help texts to some model fields.
 
 === 0.3 ===
