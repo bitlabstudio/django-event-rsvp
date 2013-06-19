@@ -1,5 +1,7 @@
 === ongoing ===
 
+- Added help texts to some model fields.
+
 === 0.3 ===
 
 - Added image field to Event model

@@ -200,12 +200,21 @@ class Event(models.Model):
 
     available_seats = models.PositiveIntegerField(
         verbose_name=_('Available seats'),
+        help_text=_(
+            'Set this to a number if only a limited amount of slots are '
+            ' available for this event. If you chose to display this on your'
+            ' site, you can create a sense of urgency for your users to'
+            ' RSVP before all slots are taken. As soon as all slots are taken,'
+            ' users cannot RSVP for this event any more.'),
         blank=True, null=True,
     )
 
     hide_available_seats = models.BooleanField(
         default=False,
         verbose_name=_('Hide available seat information'),
+        help_text=_(
+            'If you set the number of available seats you can check this field'
+            ' in order to hide that number from your users.'),
     )
 
     allow_anonymous_rsvp = models.BooleanField(
@@ -227,6 +236,11 @@ class Event(models.Model):
     max_seats_per_guest = models.PositiveIntegerField(
         blank=True, null=True,
         verbose_name=_('Maximum amount of seats per guest'),
+        help_text=_(
+            'Set this to a number if your guests can RSVP and declare that'
+            ' they are bringing some friends or family. By setting this number'
+            ' You can signal to the user that he or she can only bring a'
+            ' certain amount of additional guests.'),
     )
 
     template_name = models.CharField(
