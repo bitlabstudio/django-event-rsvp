@@ -4,6 +4,6 @@ include DESCRIPTION
 include CHANGELOG.txt
 include README.md
 graft event_rsvp
-global-exclude *.orig *.pyc *.log
+global-exclude *.orig *.pyc *.log *.swp
 prune event_rsvp/tests/coverage
 prune event_rsvp/.ropeproject
