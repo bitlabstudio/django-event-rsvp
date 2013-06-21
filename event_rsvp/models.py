@@ -11,6 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from filer.fields.image import FilerImageField
 
+from .settings import REQUIRED_FIELDS_CHOICES
+
 
 class MultiSelectFormField(forms.MultipleChoiceField):
     widget = forms.CheckboxSelectMultiple
@@ -226,11 +228,7 @@ class Event(models.Model):
     required_fields = MultiSelectField(
         verbose_name=_('Required fields'),
         max_length=250, blank=True,
-        choices=(
-            ('name', _('Name')),
-            ('email', _('Email')),
-            ('phone', _('Phone')),
-        ),
+        choices=REQUIRED_FIELDS_CHOICES,
     )
 
     max_seats_per_guest = models.PositiveIntegerField(

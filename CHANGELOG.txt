@@ -1,5 +1,8 @@
 === ongoing ===
 
+- dynamically loading the GuestForm and the choices for required fields out of
+  settings
+
 === 0.3.1 ===
 
 - Added help texts to some model fields.
