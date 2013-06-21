@@ -1,5 +1,8 @@
 === ongoing ===
 
+
+=== 0.4 ===
+
 - dynamically loading the GuestForm and the choices for required fields out of
   settings
 
