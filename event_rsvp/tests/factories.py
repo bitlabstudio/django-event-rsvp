@@ -9,7 +9,7 @@ class StaffFactory(UserFactory):
     is_staff = True
 
 
-class EventFactory(factory.Factory):
+class EventFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = Event
 
     created_by = factory.SubFactory(UserFactory)
@@ -17,7 +17,7 @@ class EventFactory(factory.Factory):
     venue = 'Bar'
 
 
-class GuestFactory(factory.Factory):
+class GuestFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = Guest
 
     event = factory.SubFactory(EventFactory)

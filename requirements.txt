@@ -13,7 +13,7 @@ Pillow==1.7.8
 # ==============================================================
 # Packages needed for running the tests. Needed by contributors.
 # ==============================================================
-factory-boy==1.2.0
+factory-boy
 django-libs
 ipdb==0.7
 Fabric
