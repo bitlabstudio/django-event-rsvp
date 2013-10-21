@@ -13,8 +13,9 @@ from django.views.generic import (
     UpdateView,
 )
 
-from event_rsvp.forms import EventForm, GuestForm
-from event_rsvp.models import Event, Guest
+from .forms import EventForm, GuestForm
+from .models import Event, Guest
+from .signals import post_guest_create
 
 
 #--------#
@@ -195,6 +196,13 @@ class GuestDetailView(StaffMixin, GuestSecurityMixin, GuestViewMixin,
 
 class GuestCreateView(GuestViewMixin, CreateView):
     """Create view to add a guest to an event."""
+    def form_valid(self, form):
+        resp = super(GuestCreateView, self).form_valid(form)
+        post_guest_create.send(
+            sender=self, request=self.request, user=form.user,
+            event=form.event)
+        return resp
+
     def get_form_kwargs(self):
         kwargs = super(GuestCreateView, self).get_form_kwargs()
         if self.request.user.is_authenticated():

@@ -1,5 +1,6 @@
 === ongoing ===
 
+- Added post_guest_create signal that is sent at form_valid in GuestCreateView
 
 === 0.4 ===
 

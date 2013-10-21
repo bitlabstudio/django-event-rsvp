@@ -2,7 +2,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from event_rsvp.models import Event, Guest
+from .models import Event, Guest
 
 
 class EventForm(forms.ModelForm):
