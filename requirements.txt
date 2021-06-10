@@ -3,7 +3,7 @@
 # ===========================================================================
 # Packages essential to this app. Needed by anyone who wants to use this app.
 # ===========================================================================
-django==1.4.3
+django==2.2.24
 django-cms==2.3.5
 django-filer==0.9.4
 South==0.7.6
